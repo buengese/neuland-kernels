@@ -49,6 +49,10 @@ let
         INET6_ESP_OFFLOAD = unset;
         INET_ESPINTCP = lib.mkForce unset;
         INET6_ESPINTCP = lib.mkForce unset;
+        RDS = lib.mkForce no;
+        RDS_TCP = lib.mkForce unset;
+        RDS_RDMA = lib.mkForce unset;
+        RDS_DEBUG = lib.mkForce unset;
 
         SOUND = no;
         SND_HDA_PATCH_LOADER = lib.mkForce unset;
