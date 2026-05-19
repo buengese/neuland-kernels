@@ -30,14 +30,6 @@ let
 
   neulandKernelPatches = [
     {
-      name = "ptrace-slightly-saner-get_dumpable-logic.patch";
-      patch = fetchpatch {
-        name = "ptrace-slightly-saner-get_dumpable-logic.patch";
-        url = "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/patch/?id=01363cb3fbd0238ffdeb09f53e9039c9edf8a730";
-        hash = "sha256-eg0T5t94z3Nta98O+8bxwgCYDr6T4szZ9IOp/f4TXMs=";
-      };
-    }
-    {
       name = "disable unused kernel features";
       patch = null;
       structuredExtraConfig = with lib.kernel; {
