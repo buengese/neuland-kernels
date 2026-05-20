@@ -107,17 +107,10 @@ let
 
         # Network transports for disabled filesystems.
         AF_RXRPC = lib.mkForce no; # AFS transport.
-        NET_9P = lib.mkForce no;
-        NET_9P_VIRTIO = lib.mkForce unset;
-        NET_9P_XEN = lib.mkForce unset;
 
         # Unused network/distributed filesystems. NFS client/server and FUSE
         # are intentionally left enabled.
         AFS_FS = lib.mkForce no;
-        "9P_FS" = lib.mkForce unset;
-        "9P_FSCACHE" = lib.mkForce unset;
-        "9P_FS_POSIX_ACL" = lib.mkForce unset;
-        "9P_FS_SECURITY" = lib.mkForce unset;
         CEPH_FS = lib.mkForce no;
         CEPH_FSCACHE = lib.mkForce unset;
         CEPH_FS_POSIX_ACL = lib.mkForce unset;
