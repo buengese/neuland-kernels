@@ -7,7 +7,7 @@
   };
 
   outputs =
-    inputs@{ flake-parts, nixpkgs, ... }:
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -15,27 +15,20 @@
       ];
 
       perSystem =
-        { pkgs, system, ... }:
+        { pkgs, ... }:
         let
           neulandLinuxPackages = pkgs.callPackage ./neuland-kernel.nix { };
+          zfsModule = neulandLinuxPackages.${pkgs.zfs.kernelModuleAttribute};
         in
         {
-          _module.args.pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-
           packages = {
             neuland-kernel = neulandLinuxPackages.kernel;
-            neuland-zfs = neulandLinuxPackages.${pkgs.zfs.kernelModuleAttribute};
+            neuland-zfs = zfsModule;
             zfs = pkgs.zfs;
-
             default = neulandLinuxPackages.kernel;
           };
 
-          legacyPackages = {
-            inherit neulandLinuxPackages;
-          };
+          legacyPackages = neulandLinuxPackages;
         };
     };
 }
