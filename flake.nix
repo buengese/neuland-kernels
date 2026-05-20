@@ -28,7 +28,7 @@
             default = neulandLinuxPackages.kernel;
           };
 
-          legacyPackages = neulandLinuxPackages;
+          legacyPackages.neulandLinuxPackages = neulandLinuxPackages;
         };
     };
 }
