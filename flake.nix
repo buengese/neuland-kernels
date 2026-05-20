@@ -28,6 +28,7 @@
           packages = {
             neuland-kernel = neulandLinuxPackages.kernel;
             neuland-zfs = neulandLinuxPackages.${pkgs.zfs.kernelModuleAttribute};
+            zfs = pkgs.zfs;
 
             default = neulandLinuxPackages.kernel;
           };
