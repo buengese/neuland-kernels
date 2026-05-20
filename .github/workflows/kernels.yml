@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build x86_64-linux kernels
+    name: Build aarch64-linux kernels
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 360
 
@@ -44,6 +44,6 @@ jobs:
       - name: Build kernel packages
         run: |
           nix build \
-            .#packages.x86_64-linux.neuland-kernel \
-            .#packages.x86_64-linux.neuland-zfs \
+            .#packages.aarch64-linux.neuland-kernel \
+            .#packages.aarch64-linux.neuland-zfs \
             --print-build-logs
