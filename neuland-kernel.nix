@@ -274,6 +274,8 @@ let
         HVC_XEN_FRONTEND = lib.mkForce unset;
         PCI_XEN = lib.mkForce unset;
 
+        PVH = yes;
+
         # No wireless networking hardware is expected on these hosts.
         WLAN = no;
         IPW2100_MONITOR = lib.mkForce unset;
