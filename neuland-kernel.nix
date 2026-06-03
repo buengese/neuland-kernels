@@ -1,6 +1,5 @@
 {
   fetchpatch,
-  fetchurl,
   lib,
   linuxKernel,
   zfs,
@@ -9,30 +8,25 @@
 let
   inherit (zfs) kernelModuleAttribute;
 
-  targetKernelVersion = "6.18.34";
+  zfsCompatibleKernelPackages = lib.filterAttrs (
+    name: kernelPackages:
+    let
+      zfsPackage = kernelPackages.${kernelModuleAttribute} or null;
+      zfsPackageEval = builtins.tryEval zfsPackage;
+    in
+    (builtins.match "linux_[0-9]+_[0-9]+" name) != null
+    && (builtins.tryEval kernelPackages).success
+    && (kernelPackages.kernel.isLTS or false)
+    && zfsPackageEval.success
+    && zfsPackage != null
+    && (!(zfsPackage.meta.broken or false))
+  ) linuxKernel.packages;
 
-  customKernel = linuxKernel.kernels.linux_6_18.override {
-    argsOverride = {
-      version = targetKernelVersion;
-      src = fetchurl {
-        url = "mirror://kernel/linux/kernel/v6.x/linux-${targetKernelVersion}.tar.xz";
-        sha256 = "0q6palsvwx0gnisjr658hlngfpvyzv0k5q4pvdk23122zcr4f334";
-      };
-    };
-  };
-
-  customKernelPackages = linuxKernel.packagesFor customKernel;
-  zfsModuleEval = builtins.tryEval (customKernelPackages.${kernelModuleAttribute});
-
-  baseLinuxPackages =
-    if
-      zfsModuleEval.success
-      && zfsModuleEval.value != null
-      && (!(zfsModuleEval.value.meta.broken or false))
-    then
-      customKernelPackages
-    else
-      throw "ZFS kernel module is not available for ${targetKernelVersion}.";
+  baseLinuxPackages = lib.last (
+    lib.sort (a: b: (lib.versionOlder a.kernel.version b.kernel.version)) (
+      builtins.attrValues zfsCompatibleKernelPackages
+    )
+  );
 
   neulandKernelPatches = [
     {
