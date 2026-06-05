@@ -2,6 +2,7 @@
   fetchpatch,
   lib,
   linuxKernel,
+  pkgs,
   zfs,
 }:
 
@@ -274,7 +275,7 @@ let
         HVC_XEN_FRONTEND = lib.mkForce unset;
         PCI_XEN = lib.mkForce unset;
 
-        PVH = yes;
+        PVH = if pkgs.stdenv.hostPlatform.isx86_64 then yes else lib.mkForce unset;
 
         # No wireless networking hardware is expected on these hosts.
         WLAN = no;
